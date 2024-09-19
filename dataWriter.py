@@ -1,9 +1,12 @@
 import pickle
 import gzip
+import os
 import numpy as np
 import matplotlib.pyplot as mp
 import pyttsx3
-path = './data/mnist.pkl.gz'
+
+home_path = os.path.dirname(__file__)
+path = os.path.join(home_path , "data", "mnist.pkl.gz")
 
 # engine = pyttsx3.init()
 with gzip.open(path, 'rb') as f:
@@ -33,7 +36,11 @@ with gzip.open(path, 'rb') as f:
 ## Output should be a vector of size 10 
 ## where value of out[i] = 1 when digit is i
 
-with open("training_data.txt" , "w") as f:
+path_training = os.path.join(home_path, "training_data.txt")
+path_test = os.path.join(home_path, "test_data.txt")
+path_validation = os.path.join(home_path, "validation_data.txt")
+
+with open(path_training , "w") as f:
     for i in range(0, len(training_data[0])):
         for j in range(0,784):
             temp1 = training_data[0][i][j]
@@ -43,7 +50,7 @@ with open("training_data.txt" , "w") as f:
         f.write(f"{temp1}")
         f.write("\n")
 
-with open("test_data.txt" , "w") as f:
+with open(path_test , "w") as f:
     for i in range(0, len(test_data[0])):
         for j in range(0,784):
             temp1 = test_data[0][i][j]
@@ -53,7 +60,7 @@ with open("test_data.txt" , "w") as f:
         f.write(f"{temp1}")
         f.write("\n")
 
-with open("validation_data.txt" , "w") as f:
+with open(path_validation , "w") as f:
     for i in range(0, len(validation_data[0])):
         for j in range(0,784):
             temp1 = validation_data[0][i][j]

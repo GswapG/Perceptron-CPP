@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 #include <fstream>
 #include <string>
@@ -31,7 +32,7 @@ void import_data(string path, vector<vector<vector<double>>> &vec){
     ifstream file("../../" + path);
     string line;
     if(!file){
-        cout<<"Error opening file"<<endl; 
+        cout<<"Error opening file : "<<path<<endl; 
     }
     int line_number = 0; // line_number is data point number 
     while(getline(file, line)){
@@ -55,10 +56,26 @@ void import_data(string path, vector<vector<vector<double>>> &vec){
     }
 }
 
+void delete_temp_files(){
+    remove("../../training_data.txt");
+    remove("../../test_data.txt");
+    remove("../../validation_data.txt");
+}
+
+void create_temp_files(){
+    system("python ../../dataWriter.py");
+}
+
 void import_data_wrapper(){
+    cout<<"Extracting data from python objects..";
+    create_temp_files();
+    cout<<"Importing data to c++ vectors..."<<endl;
     import_data("training_data.txt", training_data);
     import_data("test_data.txt", test_data);
     import_data("validation_data.txt", validation_data);
+    cout<<"Deleting tempory files..."<<endl;
+    delete_temp_files();
+    cout<<"Data Import Complete!!"<<endl;
 }
 
 int main(){
