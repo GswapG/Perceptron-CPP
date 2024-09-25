@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <functional>
 
 using namespace std;
 
@@ -180,6 +181,47 @@ int final_result(){
         }
     }
     return mx_ind+1;
+}
+
+template <class T>
+void fisher_bates_random_shuffle(vector<T> &x){
+    function<int(int,int)> randRange = [&] (int lo, int hi) -> int{
+        int multiplier = (hi-lo);
+        int random_index = (int)(multiplier*rng()) + lo;
+        return random_index;
+    };
+    for(int i = x.size()-1;i >= 0;i--){
+        int j = randRange(0,i-1);
+        swap(x[i],x[j]);
+    }
+}
+
+void update_batch(vector<vector<vector<double>>> data, double eta){
+    //Kal karunga 
+}
+
+void SGD(int epochs, int mini_batch_size, double learning_rate){
+    double &eta = learning_rate;
+    //Loop for Epochs
+    for(int epoch = 0;epoch < epochs;epoch++){
+        //Shuffle the training data randomly
+        fisher_bates_random_shuffle(training_data);
+
+        //Divide into batches of size mini_batch_size
+        vector<vector<vector<vector<double>>>> batches;
+        for(int i = 0;i< (training_data.size()/mini_batch_size); i++){
+            vector<vector<vector<double>>> temp(mini_batch_size);
+            for(int j = 0;j<mini_batch_size; j++){
+                temp[j] = training_data[i*mini_batch_size + j];
+            }
+            batches.emplace_back(temp);
+        }
+
+        //Run update for all mini batches
+        for(auto &batch : batches){
+            update_batch(batch,eta);
+        }
+    }
 }
 
 int main(){
