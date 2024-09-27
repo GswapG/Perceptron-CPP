@@ -51,6 +51,7 @@ class Network:
 
         self.weights = [w-((eta/n))*nw for w, nw in zip(self.weights, nabla_w)]
         self.biases = [b - (eta/n)*nb for b, nb in zip(self.biases, nabla_b)]
+        print(self.biases[-1])
 
     def backprop(self, x, y):
         nabla_b = [np.zeros(b.shape) for b in self.biases]
